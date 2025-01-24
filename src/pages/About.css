@@ -7,7 +7,6 @@
     overflow: hidden;
     font-family: 'Arial', sans-serif;
   }
-  
   /* Background styling for About Section */
   .about-hero-section::before {
     content: "";
