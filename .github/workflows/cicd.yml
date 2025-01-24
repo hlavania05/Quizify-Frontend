@@ -25,8 +25,8 @@ jobs:
     runs-on: self-hosted 
     steps:
       - name: Pull image from docker hub
-        run: docker pull harshitalavania/quiz-portal-frontend:latest
+        run: sudo docker pull harshitalavania/quiz-portal-frontend:latest
       - name: Delete old container
-        run: docker rm -f quizify-frontend-container 
+        run: sudo docker rm -f quizify-frontend-container 
       - name: Run Docker Container
-        run: docker run -d -p 5173:80 --name quizify-frontend-container harshitalavania/quiz-portal-frontend
+        run: sudo docker run -d -p 5173:80 --name quizify-frontend-container harshitalavania/quiz-portal-frontend
