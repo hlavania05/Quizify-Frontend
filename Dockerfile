@@ -11,7 +11,7 @@ RUN npm run build
 FROM nginx:1.23-alpine
 
 # Copy custom nginx configuration file
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx.conf /etc/nginx/sites-enabled/default
 
 # Clean the default Nginx html folder
 WORKDIR /usr/share/nginx/html
