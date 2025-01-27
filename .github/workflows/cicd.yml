@@ -12,21 +12,29 @@ jobs:
       - name: Checkout Source
         uses: actions/checkout@v4
       - name: Login to docker hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}     
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker Image
         run: docker build -t harshitalavania/quiz-portal-frontend .
-
-
       - name: Publish Image to docker hub
         run: docker push harshitalavania/quiz-portal-frontend:latest 
- 
+
   deploy:
     needs: build
     runs-on: self-hosted 
     steps:
       - name: Pull image from docker hub
         run: sudo docker pull harshitalavania/quiz-portal-frontend:latest
+      - name: Create Docker Network if not exists
+        run: |
+          if ! sudo docker network ls | grep my_app_network; then
+            sudo docker network create my_app_network
+          fi
       - name: Delete old container
-        run: sudo docker rm -f quizify-frontend-container 
+        run: sudo docker rm -f quizify-frontend-container || true
       - name: Run Docker Container
-        run: sudo docker run -d -p 80:80 --name quizify-frontend-container harshitalavania/quiz-portal-frontend
+        run: |
+          sudo docker run -d \
+          --name quizify-frontend-container \
+          --network my_app_network \
+          -p 80:80 \
+          harshitalavania/quiz-portal-frontend
