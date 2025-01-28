@@ -2,7 +2,7 @@
 FROM node:alpine3.18 as build
 
 WORKDIR /app
-COPY package.json .
+COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
@@ -18,7 +18,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf *
 
 # Copy the built frontend app from the previous build stage
-COPY --from=build /app/dist .
+COPY --from=build /app/build .
 
 # Expose port 80
 EXPOSE 80
